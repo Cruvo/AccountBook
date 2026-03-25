@@ -747,6 +747,7 @@ const App = {
   renderSettings() {
     const s = DB.getSettings();
     const c = document.getElementById('main-content');
+    const hasPassword = !!Auth.storedHash();
     c.innerHTML = `
       <div class="card" style="max-width:520px;margin-bottom:20px">
         <div class="section-title" style="margin-bottom:18px">Preferences</div>
@@ -769,6 +770,31 @@ const App = {
         </div>
         <button class="btn btn-primary" onclick="App.saveSettings()">💾 Save Preferences</button>
       </div>
+
+      <div class="card" style="max-width:520px;margin-bottom:20px">
+        <div class="section-title" style="margin-bottom:6px">🔐 Password & Security</div>
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:18px">${hasPassword ? 'Change your lock screen password.' : 'No password is set — anyone can open this app.'}</p>
+        ${hasPassword ? `
+        <div class="form-group">
+          <label class="form-label">Current Password</label>
+          <input class="form-control" type="password" id="pw-current" placeholder="Enter current password">
+        </div>` : ''}
+        <div class="form-group">
+          <label class="form-label">New Password</label>
+          <input class="form-control" type="password" id="pw-new" placeholder="At least 6 characters">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirm New Password</label>
+          <input class="form-control" type="password" id="pw-confirm" placeholder="Repeat new password">
+        </div>
+        <p id="pw-err" style="color:var(--expense);font-size:13px;min-height:16px;margin-bottom:10px"></p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="App.changePassword()">🔑 ${hasPassword ? 'Change Password' : 'Set Password'}</button>
+          ${hasPassword ? `<button class="btn btn-ghost" onclick="App.removePassword()">🔓 Remove Password</button>` : ''}
+          <button class="btn btn-danger" onclick="Auth.logout()">🚪 Log Out</button>
+        </div>
+      </div>
+
       <div class="card" style="max-width:520px">
         <div class="section-title" style="margin-bottom:18px">Data Management</div>
         <div style="display:flex;flex-direction:column;gap:12px">
@@ -790,6 +816,35 @@ const App = {
     });
     this.applyTheme();
     this.toast('Settings saved');
+  },
+
+  async changePassword() {
+    const hasPassword = !!Auth.storedHash();
+    const current = hasPassword ? (document.getElementById('pw-current')?.value || '') : '';
+    const newPw   = document.getElementById('pw-new')?.value || '';
+    const confirm = document.getElementById('pw-confirm')?.value || '';
+    const err     = document.getElementById('pw-err');
+    if (newPw.length < 6) { err.textContent = 'Password must be at least 6 characters.'; return; }
+    if (newPw !== confirm) { err.textContent = 'Passwords do not match.'; return; }
+    try {
+      await Auth.changePassword(current, newPw);
+      this.toast('Password updated');
+      this.renderSettings();
+    } catch(e) {
+      err.textContent = e.message;
+    }
+  },
+
+  async removePassword() {
+    if (!this.confirm('Remove password protection? Anyone will be able to open your account book.')) return;
+    const current = document.getElementById('pw-current')?.value || '';
+    try {
+      await Auth.changePassword(current, '');
+      this.toast('Password removed', 'info');
+      this.renderSettings();
+    } catch(e) {
+      document.getElementById('pw-err').textContent = e.message;
+    }
   },
 
   exportBackup() {
@@ -847,4 +902,4 @@ const App = {
   }
 };
 
-document.addEventListener('DOMContentLoaded', () => App.init());
+// App.init() is called by auth.js after successful authentication.

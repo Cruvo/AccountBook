@@ -601,3 +601,57 @@ tr:hover td { background: var(--glass); }
 
 /* Hamburger */
 #mob-toggle { display: none; }
+
+/* ── Auth Overlay ───────────────────────────────────────── */
+#auth-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+#auth-overlay.hidden { display: none; }
+
+.auth-card {
+  background: var(--surface);
+  border: 1px solid var(--glass-border);
+  border-radius: calc(var(--radius) + 6px);
+  padding: 40px 36px;
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 32px 80px rgba(0,0,0,.5);
+  animation: modalIn .3s ease;
+}
+.auth-logo {
+  font-size: 52px;
+  margin-bottom: 14px;
+  display: block;
+  filter: drop-shadow(0 4px 16px rgba(124,58,237,.5));
+}
+.auth-title {
+  font-size: 24px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #a78bfa, #818cf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+.auth-sub {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+.auth-form { text-align: left; }
+.auth-err {
+  color: var(--expense);
+  font-size: 13px;
+  min-height: 20px;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
