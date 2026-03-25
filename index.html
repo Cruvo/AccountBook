@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account Book – Personal Finance Tracker</title>
+  <meta name="description" content="A personal account book for tracking income, expenses, journal entries, monthly & yearly reports, and financial advice.">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- ── Sidebar ─────────────────────────────────────────── -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a class="logo" href="#">
+        <div class="logo-icon">📒</div>
+        <div class="logo-text">
+          <span class="logo-title">Account Book</span>
+          <span class="logo-sub">Personal Finance</span>
+        </div>
+      </a>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-label">Overview</div>
+        <div class="nav-item active" data-page="dashboard"><span class="nav-icon">🏠</span> Dashboard</div>
+        <div class="nav-item" data-page="advice"><span class="nav-icon">💡</span> Financial Advice</div>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-label">Manage</div>
+        <div class="nav-item" data-page="categories"><span class="nav-icon">🏷️</span> Categories</div>
+        <div class="nav-item" data-page="items"><span class="nav-icon">📦</span> Items</div>
+        <div class="nav-item" data-page="entries"><span class="nav-icon">📒</span> Journal Entries</div>
+        <div class="nav-item" data-page="budgets"><span class="nav-icon">🎯</span> Budgets</div>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-label">Reports</div>
+        <div class="nav-item" data-page="monthly"><span class="nav-icon">📅</span> Monthly Report</div>
+        <div class="nav-item" data-page="yearly"><span class="nav-icon">📊</span> Yearly Report</div>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-label">System</div>
+        <div class="nav-item" data-page="settings"><span class="nav-icon">⚙️</span> Settings</div>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div style="font-size:11px;color:var(--text-dim);text-align:center">Data stored locally in your browser</div>
+    </div>
+  </aside>
+
+  <!-- ── Main Wrapper ─────────────────────────────────────── -->
+  <div class="main-wrapper">
+    <header class="topbar">
+      <div>
+        <div class="topbar-title" id="page-title">Dashboard</div>
+        <div class="topbar-sub"  id="page-sub">Your financial overview</div>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn btn-primary btn-sm" onclick="App.openEntryModal()">＋ Add Entry</button>
+        <button class="btn btn-ghost btn-sm btn-icon" id="mob-toggle" style="display:none">☰</button>
+      </div>
+    </header>
+
+    <main id="main-content"></main>
+  </div>
+
+  <!-- ── Modal ───────────────────────────────────────────── -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-title">Modal</h2>
+        <button class="modal-close" onclick="App.hideModal()" aria-label="Close">✕</button>
+      </div>
+      <div id="modal-body"></div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="App.hideModal()">Cancel</button>
+        <button class="btn btn-primary" id="modal-save">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Toast container ─────────────────────────────────── -->
+  <div id="toast-container"></div>
+
+  <!-- ── Scripts ─────────────────────────────────────────── -->
+  <script src="data.js"></script>
+  <script src="reports.js"></script>
+  <script src="advice.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
