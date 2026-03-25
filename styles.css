@@ -45,7 +45,7 @@ body {
   font-family: 'Inter', system-ui, sans-serif;
   background: var(--bg);
   color: var(--text);
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   overflow: hidden;
 }
@@ -147,7 +147,7 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  min-height: 100vh;
+  height: 100vh;
 }
 
 .topbar {
